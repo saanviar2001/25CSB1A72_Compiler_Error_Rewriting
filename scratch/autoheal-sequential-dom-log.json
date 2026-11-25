@@ -1,0 +1,117 @@
+[
+  {
+    "run": 1,
+    "filename": "tc01_missing_semicolon.cpp",
+    "screenshot": "scratch/autoheal-sequential-run-1.png",
+    "bannerCount": 1,
+    "title": "Compiles but not behaviorally verified",
+    "description": "Every blocking diagnostic is gone, so the code now compiles cleanly. No test specification exists at `tc01_missing_semicolon.cpp.tests.json`, so behavior was not verified.",
+    "attemptCount": 1,
+    "attempts": [
+      {
+        "observed": "line 10: error: expected ',' or ';' before 'int'",
+        "outcome": "The error is gone and the build is clean",
+        "before": "// TC-01 | Category: syntax_error\n// Error : Missing semicolon after variable declaration.\n// The auto-healer should insert ';' and recompile cleanly.\n\n#include <iostream>\nusing namespace std;\n\nint main() {\n    int x = 10\n    int y = 20;\n    cout << \"Sum = \" << x + y << endl;\n    return 0;\n}\n",
+        "status": [
+          "Missing Semicolon",
+          "COMPILES",
+          "PATCHED"
+        ]
+      }
+    ],
+    "finalCode": "// TC-01 | Category: syntax_error\n// Error : Missing semicolon after variable declaration.\n// The auto-healer should insert ';' and recompile cleanly.\n\n#include <iostream>\nusing namespace std;\n\nint main() {\n    int x = 10;\n    int y = 20;\n    cout << \"Sum = \" << x + y << endl;\n    return 0;\n}\n",
+    "staleCleanText": false
+  },
+  {
+    "run": 2,
+    "filename": "tc02_undeclared_variable.cpp",
+    "screenshot": "scratch/autoheal-sequential-run-2.png",
+    "bannerCount": 1,
+    "title": "Could not be automatically fixed - requires manual correction",
+    "description": "No repair strategy exists for this error type (undeclared identifier 'result') — this requires knowing your intended logic. The build is still blocked by line 11: error: 'result' was not declared in this scope. This error needs information the pattern-based healer does not have - the intended algorithm, the type of a value, or a missing file - so it is reported rather than guessed at.",
+    "attemptCount": 1,
+    "attempts": [
+      {
+        "observed": "No repair strategy exists for this error type (undeclared identifier 'result') — this requires knowing your intended logic. The build is still blocked by line 11: error: 'result' was not declared in this scope. This error needs information the pattern-based healer does not have - the intended algorithm, the type of a value, or a missing file - so it is reported rather than guessed at.",
+        "outcome": "Build remains blocked; manual correction is required",
+        "before": "// TC-02 | Category: name_resolution\n// Error : Variable 'result' is used before it is declared.\n// The auto-healer should insert 'auto result = ...' before the first use.\n\n#include <iostream>\nusing namespace std;\n\nint main() {\n    int a = 5;\n    int b = 3;\n    result = a + b;\n    cout << \"Result: \" << result << endl;\n    return 0;\n}\n",
+        "status": [
+          "Not Fixable",
+          "FAILED",
+          "NO CHANGE"
+        ]
+      }
+    ],
+    "finalCode": "// TC-02 | Category: name_resolution\n// Error : Variable 'result' is used before it is declared.\n// The auto-healer should insert 'auto result = ...' before the first use.\n\n#include <iostream>\nusing namespace std;\n\nint main() {\n    int a = 5;\n    int b = 3;\n    result = a + b;\n    cout << \"Result: \" << result << endl;\n    return 0;\n}\n",
+    "staleCleanText": false
+  },
+  {
+    "run": 3,
+    "filename": "tc03_missing_include.cpp",
+    "screenshot": "scratch/autoheal-sequential-run-3.png",
+    "bannerCount": 1,
+    "title": "Could not be automatically fixed - requires manual correction",
+    "description": "No repair strategy exists for this error type (undeclared identifier 'vector') — this requires knowing your intended logic. The build is still blocked by line 9: error: 'vector' was not declared in this scope. This error needs information the pattern-based healer does not have - the intended algorithm, the type of a value, or a missing file - so it is reported rather than guessed at.",
+    "attemptCount": 1,
+    "attempts": [
+      {
+        "observed": "No repair strategy exists for this error type (undeclared identifier 'vector') — this requires knowing your intended logic. The build is still blocked by line 9: error: 'vector' was not declared in this scope. This error needs information the pattern-based healer does not have - the intended algorithm, the type of a value, or a missing file - so it is reported rather than guessed at.",
+        "outcome": "Build remains blocked; manual correction is required",
+        "before": "// TC-03 | Category: missing_include\n// Error : 'vector' is not declared — #include <vector> is absent.\n// The auto-healer should insert the correct #include directive.\n\n#include <iostream>\nusing namespace std;\n\nint main() {\n    vector<int> numbers = {1, 2, 3, 4, 5};\n    for (int n : numbers) {\n        cout << n << \" \";\n    }\n    cout << endl;\n    return 0;\n}\n",
+        "status": [
+          "Not Fixable",
+          "FAILED",
+          "NO CHANGE"
+        ]
+      }
+    ],
+    "finalCode": "// TC-03 | Category: missing_include\n// Error : 'vector' is not declared — #include <vector> is absent.\n// The auto-healer should insert the correct #include directive.\n\n#include <iostream>\nusing namespace std;\n\nint main() {\n    vector<int> numbers = {1, 2, 3, 4, 5};\n    for (int n : numbers) {\n        cout << n << \" \";\n    }\n    cout << endl;\n    return 0;\n}\n",
+    "staleCleanText": false
+  },
+  {
+    "run": 4,
+    "filename": "tc05_missing_closing_brace.cpp",
+    "screenshot": "scratch/autoheal-sequential-run-4.png",
+    "bannerCount": 1,
+    "title": "Compiles but not behaviorally verified",
+    "description": "Every blocking diagnostic is gone, so the code now compiles cleanly. No test specification exists at `tc05_missing_closing_brace.cpp.tests.json`, so behavior was not verified.",
+    "attemptCount": 1,
+    "attempts": [
+      {
+        "observed": "line 16: error: a function-definition is not allowed here before '{' token",
+        "outcome": "The error is gone and the build is clean",
+        "before": "// TC-05 | Category: missing_closing_brace\n// Error : The function body is missing its closing '}'.\n// The auto-healer uses a brace-depth stack parser to insert the missing brace.\n\n#include <iostream>\nusing namespace std;\n\nvoid greet(string name) {\n    if (name.empty()) {\n        cout << \"Hello, Stranger!\" << endl;\n    } else {\n        cout << \"Hello, \" << name << \"!\" << endl;\n    }\n// Missing closing brace for greet()\n\nint main() {\n    greet(\"Alice\");\n    greet(\"\");\n    return 0;\n}\n",
+        "status": [
+          "Missing Closing Brace",
+          "COMPILES",
+          "PATCHED"
+        ]
+      }
+    ],
+    "finalCode": "// TC-05 | Category: missing_closing_brace\n// Error : The function body is missing its closing '}'.\n// The auto-healer uses a brace-depth stack parser to insert the missing brace.\n\n#include <iostream>\nusing namespace std;\n\nvoid greet(string name) {\n    if (name.empty()) {\n        cout << \"Hello, Stranger!\" << endl;\n    } else {\n        cout << \"Hello, \" << name << \"!\" << endl;\n    }\n// Missing closing brace for greet()\n\n}\nint main() {\n    greet(\"Alice\");\n    greet(\"\");\n    return 0;\n}\n",
+    "staleCleanText": false
+  },
+  {
+    "run": 5,
+    "filename": "tc07_keyword_typo.cpp",
+    "screenshot": "scratch/autoheal-sequential-run-5.png",
+    "bannerCount": 1,
+    "title": "Compiles but not behaviorally verified",
+    "description": "Every blocking diagnostic is gone, so the code now compiles cleanly. No test specification exists at `tc07_keyword_typo.cpp.tests.json`, so behavior was not verified.",
+    "attemptCount": 1,
+    "attempts": [
+      {
+        "observed": "line 9: error: 'retrun' was not declared in this scope",
+        "outcome": "The error is gone and the build is clean",
+        "before": "// TC-07 | Category: syntax_error (keyword typo)\n// Error : 'retrun' is not a C++ keyword — it is a transposition of 'return'.\n// The auto-healer applies Levenshtein-distance spell correction.\n\n#include <iostream>\nusing namespace std;\n\nint add(int a, int b) {\n    retrun a + b;       // Typo: 'retrun' instead of 'return'\n}\n\nint main() {\n    cout << \"3 + 4 = \" << add(3, 4) << endl;\n    return 0;\n}\n",
+        "status": [
+          "Name Resolution Rule",
+          "COMPILES",
+          "PATCHED"
+        ]
+      }
+    ],
+    "finalCode": "// TC-07 | Category: syntax_error (keyword typo)\n// Error : 'retrun' is not a C++ keyword — it is a transposition of 'return'.\n// The auto-healer applies Levenshtein-distance spell correction.\n\n#include <iostream>\nusing namespace std;\n\nint add(int a, int b) {\n    return a + b;       // Typo: 'retrun' instead of 'return';\n}\n\nint main() {\n    cout << \"3 + 4 = \" << add(3, 4) << endl;\n    return 0;\n}\n",
+    "staleCleanText": false
+  }
+]
